@@ -27,8 +27,13 @@ def parse_date(date):
 
 
 def parse_date_range(date_from=None, date_to=None):
+    """Set correct date range"""
     date_to = parse_date(date_to) if date_to else datetime.datetime.utcnow()  # if not specified, set to current date
+    if date_to is None:
+        return date_from, date_to
     date_from = parse_date(date_from) if date_from else date_to - relativedelta(years=1)
+    if all([date_to, date_from]) and date_to < date_from:
+        return None, None
     return date_from, date_to
 
 
