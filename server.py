@@ -1,11 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, Flask
-from sources.api import api
+from flask import render_template
+from sources.api import app
 
-app = Flask(__name__)
-main = Blueprint('app', __name__)
-
+# app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-app.register_blueprint(api, url_prefix='/api/v1')
 
 
 @app.route('/')

@@ -1,14 +1,37 @@
-from flask import Blueprint, request, jsonify, Flask, abort
+from flask import request, jsonify, Flask, abort
 from sources.calendar_api import get_all_events, get_calendars_list, set_up_api_service
-from sources.parsing import parse_date_range, parse_events
+from sources.parsing import parse_events
+from flask_rest_api import Api, Blueprint, abort
+from sources.schemas import *
 
-api = Blueprint('api', __name__)
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 calendar_service = set_up_api_service(scopes=SCOPES, pickle_token_path='../token.pickle')
 
+app = Flask('API')
+app.config['OPENAPI_VERSION'] = '3.0.2'
+app.config['OPENAPI_URL_PREFIX'] = '/docs'
+app.config['OPENAPI_SWAGGER_UI_VERSION'] = '3.3.0'
+app.config['OPENAPI_SWAGGER_UI_PATH'] = '/swagger_ui'
+app.config['OPENAPI_REDOC_PATH'] = '/redoc_ui'
 
-@api.route('/', methods=["GET"])
-def get():
+api = Api(app)
+blp = Blueprint('api', 'api', url_prefix='/api/v1',
+                description='Mentoring statistics')
+
+
+@blp.route('/', methods=["GET"])
+@blp.arguments(MentoringStatsArgs, location='query')
+@blp.response(MentoringStatsResponse(many=True), example={
+    "from": "2019-7-16",
+    "hours": 1.0,
+    "surname": "mentor",
+    "to": "2019-10-20"
+  })
+def get(_):
+    """Get mentoring statistics
+
+    Return statistics for mentor(s) in the specified date range
+    """
     surname = request.args.get('surname')
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
@@ -27,7 +50,8 @@ def get():
     return jsonify(parse_events(all_events, surname))
 
 
+api.register_blueprint(blp)
+
+
 if __name__ == '__main__':
-    app = Flask(__name__)
-    app.register_blueprint(api, url_prefix='/api/v1')
     app.run(debug=True)
