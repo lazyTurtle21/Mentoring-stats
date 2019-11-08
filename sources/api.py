@@ -44,7 +44,7 @@ def get(_):
     test_calendar_id = test_calendar_id[0]['id'] if test_calendar_id else 'primary'
 
     d_from, d_to = parse_date_range(date_from=date_from, date_to=date_to)
-    if d_from is None or d_to is None:
+    if not all([d_from, d_to]):
         abort(422, f'"{date_from if not d_from else date_to}" is not a correct value for date.')
 
     all_events = get_all_events(calendar_service, calendar_id=test_calendar_id,

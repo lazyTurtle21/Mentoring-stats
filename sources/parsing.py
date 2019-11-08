@@ -38,7 +38,7 @@ def parse_date_range(date_from=None, date_to=None):
     if date_to is None:
         return None, None
     date_from = parse_date(date_from) if date_from is not None else date_to - relativedelta(years=1)
-    if not all([date_to, date_from]) or (date_to < date_from):
+    if not date_from or (date_to < date_from):
         return None, None
     return date_from, date_to
 
