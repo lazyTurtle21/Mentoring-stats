@@ -1,27 +1,10 @@
-import os.path
-import pickle
-
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 
 
-def set_up_api_service(scopes=None, pickle_token_path='token.pickle', json_creds_path='credentials.json'):
-    creds = None
-    # Pickle token stores the user's access and refresh tokens
-    if os.path.exists(pickle_token_path):
-        with open(pickle_token_path, 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(json_creds_path, scopes)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open(pickle_token_path, 'wb') as token:
-            pickle.dump(creds, token)
+def set_up_api_service(scopes=None, json_creds_path='credentials.json'):
+    flow = InstalledAppFlow.from_client_secrets_file(json_creds_path, scopes)
+    creds = flow.run_local_server(port=0)
 
     return build('calendar', 'v3', credentials=creds)
 

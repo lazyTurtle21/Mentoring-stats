@@ -5,7 +5,7 @@ from flask_rest_api import Api, Blueprint, abort
 from sources.schemas import *
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-calendar_service = set_up_api_service(scopes=SCOPES, pickle_token_path='../token.pickle')
+calendar_service = set_up_api_service(scopes=SCOPES, json_creds_path='credentials.json')
 
 app = Flask('API')
 app.config['OPENAPI_VERSION'] = '3.0.2'
@@ -21,12 +21,15 @@ blp = Blueprint('api', 'api', url_prefix='/api/v1',
 
 @blp.route('/', methods=["GET"])
 @blp.arguments(MentoringStatsArgs, location='query')
-@blp.response(MentoringStatsResponse(many=True), example={
-    "from": "2019-7-16",
-    "hours": 1.0,
-    "surname": "mentor",
-    "to": "2019-10-20"
-  })
+@blp.response(MentoringStatsResponse(many=True), description="Return statistics if such mentor is found.",
+              example={
+                  "from": "2019-7-16",
+                  "hours": 1.0,
+                  "surname": "mentor",
+                  "to": "2019-10-20"
+              })
+@blp.response(code=422, description="Invalid date format.")
+@blp.response(code=404, description="Mentor not found.")
 def get(_):
     """Get mentoring statistics
 
@@ -47,11 +50,14 @@ def get(_):
     all_events = get_all_events(calendar_service, calendar_id=test_calendar_id,
                                 date_from=d_from.isoformat() + 'Z', date_to=d_to.isoformat() + 'Z')
 
-    return jsonify(parse_events(all_events, surname))
+    parsed_events = parse_events(all_events, surname)
+    if parsed_events:
+        return jsonify(parsed_events)
+    else:
+        abort(404, "Mentor not found.")
 
 
 api.register_blueprint(blp)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

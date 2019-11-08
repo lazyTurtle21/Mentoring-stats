@@ -1,7 +1,6 @@
 from flask import render_template
 from sources.api import app
 
-# app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 
