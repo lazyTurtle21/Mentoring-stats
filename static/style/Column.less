@@ -1,0 +1,24 @@
+.Column{
+  flex-basis: 100%;
+  display: flex;
+  padding: 10px 0;
+  justify-content: center;
+  &:before {
+    color: #6C7A89;
+    padding-right: 10px;
+    content: attr(data-label);
+    text-align: right;
+  }
+  &_name {
+    flex-basis: 40%;
+  }
+  &_hours {
+    flex-basis: 10%;
+  }
+  &_from {
+    flex-basis: 25%;
+  }
+  &_to {
+    flex-basis: 25%;
+  }
+}
