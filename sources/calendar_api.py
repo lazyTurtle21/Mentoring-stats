@@ -5,7 +5,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 def set_up_api_service(scopes=None, json_creds_path='credentials.json'):
     flow = InstalledAppFlow.from_client_secrets_file(json_creds_path, scopes)
     creds = flow.run_local_server(port=0)
-
     return build('calendar', 'v3', credentials=creds)
 
 

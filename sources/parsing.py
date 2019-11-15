@@ -34,7 +34,8 @@ def parse_date_range(date_from=None, date_to=None):
     :param date_to: string in format YYYY-MM-DD
     :return: datetime.datetime object if date_to and date_from are correct; otherwise - None, None
     """
-    date_to = parse_date(date_to) if date_to is not None else datetime.datetime.utcnow()  # if not specified, set to current date
+    date_to = parse_date(
+        date_to) if date_to is not None else datetime.datetime.utcnow()  # if not specified, set to current date
     if date_to is None:
         return None, None
     date_from = parse_date(date_from) if date_from is not None else date_to - relativedelta(years=1)
@@ -49,6 +50,7 @@ def parse_events(events, surname=None):
     :param surname: mentor's surname
     :return: list of statistics
     """
+
     def parse_one_mentor(m_events, last_name):
         first_event, last_event = parse_date(m_events[0]['start']), parse_date(m_events[-1]['start'])
         return {'surname': last_name, 'hours': len(m_events) / 2,
