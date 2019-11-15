@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="static/style/common.css">
+    <link rel="stylesheet" href="static/style/Container.css">
+    <link rel="stylesheet" href="static/style/Table.css">
+    <link rel="stylesheet" href="static/style/Column.css">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/ralabs_logo.png') }}">
+
+    <title>Mentoring stats</title>
 </head>
+
 <body>
+<div class="Container">
+    <h2>Statistics</h2>
+    <ul class="Table">
+    </ul>
+</div>
 <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>
