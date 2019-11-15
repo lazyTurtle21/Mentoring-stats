@@ -2,6 +2,7 @@ from flask import render_template
 from sources.api import app
 
 app.config['JSON_AS_ASCII'] = False
+app.config['CREDS'] = 'credentials.json'
 
 
 @app.route('/')

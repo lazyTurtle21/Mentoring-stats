@@ -5,9 +5,12 @@ from flask_rest_api import Api, Blueprint, abort
 from sources.schemas import *
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-calendar_service = set_up_api_service(scopes=SCOPES, json_creds_path='credentials.json')
 
 app = Flask('API')
+
+if 'CREDS' not in app.config.keys():
+    app.config['CREDS'] = '../credentials.json'
+
 app.config['OPENAPI_VERSION'] = '3.0.2'
 app.config['OPENAPI_URL_PREFIX'] = '/docs'
 app.config['OPENAPI_SWAGGER_UI_VERSION'] = '3.3.0'
@@ -39,7 +42,10 @@ def get(_):
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
 
-    calendar_list = get_calendars_list(calendar_service)  # for testing
+    if 'CALENDAR_SERVICE' not in app.config.keys():
+        app.config['CALENDAR_SERVICE'] = set_up_api_service(scopes=SCOPES, json_creds_path=app.config['CREDS'])
+
+    calendar_list = get_calendars_list(app.config['CALENDAR_SERVICE'])  # for testing
     test_calendar_id = list(filter(lambda calender: calender['summary'] == 'test', calendar_list))
     test_calendar_id = test_calendar_id[0]['id'] if test_calendar_id else 'primary'
 
@@ -47,7 +53,7 @@ def get(_):
     if not all([d_from, d_to]):
         abort(422, f'"{date_from if not d_from else date_to}" is not a correct value for date.')
 
-    all_events = get_all_events(calendar_service, calendar_id=test_calendar_id,
+    all_events = get_all_events(app.config['CALENDAR_SERVICE'], calendar_id=test_calendar_id,
                                 date_from=d_from.isoformat() + 'Z', date_to=d_to.isoformat() + 'Z')
 
     parsed_events = parse_events(all_events, surname)
