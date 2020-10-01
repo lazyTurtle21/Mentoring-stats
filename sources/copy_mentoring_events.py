@@ -1,4 +1,4 @@
-from sources.calendar_api import get_all_events, get_calendars_list, set_up_api_service
+from calendar_api import get_all_events, get_calendars_list, set_up_api_service
 import argparse
 
 

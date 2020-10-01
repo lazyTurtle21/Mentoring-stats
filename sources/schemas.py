@@ -1,6 +1,6 @@
 import marshmallow as ma
 import datetime
-from sources.parsing import parse_date_range
+from parsing import parse_date_range
 
 
 class MentoringStatsArgs(ma.Schema):

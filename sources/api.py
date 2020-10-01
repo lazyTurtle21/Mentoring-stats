@@ -1,8 +1,8 @@
 from flask import request, jsonify, Flask, abort
-from sources.calendar_api import get_all_events, get_calendars_list, set_up_api_service
-from sources.parsing import parse_events
+from calendar_api import get_all_events, get_calendars_list, set_up_api_service
+from parsing import parse_events
 from flask_rest_api import Api, Blueprint, abort
-from sources.schemas import *
+from schemas import *
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
