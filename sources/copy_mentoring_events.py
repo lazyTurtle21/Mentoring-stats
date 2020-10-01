@@ -13,7 +13,7 @@ def create_event(event_data, service, calendar_id):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Copy mentoring events from one calendar to another.')
     parser.add_argument('--initial', '-i', type=str,
                         help='Name of the calendar to get the events from.', required=True)
     parser.add_argument('--to', '-t', type=str,
@@ -30,7 +30,6 @@ if __name__ == '__main__':
         raise Exception('No such calendar: ' + args.initial if not from_events_calendar else args.to)
 
     events = get_all_events(calendar_id=from_events_calendar[0]['id'], service=service)
-
     mentoring_events = list(filter(lambda e: e.get('summary', '').startswith('Mentoring:'), events))
 
     for event in mentoring_events:
