@@ -9,8 +9,8 @@
 
 ```sh
 git clone https://github.com/lazyTurtle21/Mentoring-stats.git
-pip install -r requirements.txt
 cd Mentoring-stats/
+pip install -r requirements.txt
 python3 ./sources/copy_mentoring_events.py --initial INITIAL --to TO
 ```
 Also, you can run help to see detailed description:
