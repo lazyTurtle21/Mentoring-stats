@@ -5,13 +5,32 @@
 
 ## How to run:
 
-[Clone](https://github.com/lazyTurtle21/Mentoring-stats/archive/master.zip) the repository.
-Unzip it, and in the root folder run:
+* To run tool that copies events from one calendar to another, run:
+
 ```sh
+git clone https://github.com/lazyTurtle21/Mentoring-stats.git
 pip install -r requirements.txt
-python server.py
+cd Mentoring-stats/
+python3 ./sources/copy_mentoring_events.py --initial INITIAL --to TO
 ```
+Also, you can run help to see detailed description:
+```sh
+python3 ./sources/copy_mentoring_events.py -h
+```
+
+* In case you want to run the UI along with API:
+
+```sh
+python3 server.py
+```
+* To run only API, run:
+```sh
+python3 sources/api.py
+```
+
+
 After that, a window with google account login should open. Give permissions, and then the app is available under this [link](http://127.0.0.1:5000/).
+The API is available under [this](http://127.0.0.1:5000/api/v1)
 
 ## Documentation:
 Documention can be accessed via several ways(after previous step):
