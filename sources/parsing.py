@@ -46,7 +46,7 @@ def parse_date_range(date_from=None, date_to=None):
 
 def parse_events(events, surname=None):
     """
-    :param events: list of dictionaries that has keys 'summary' and 'start'
+    :param events: list of events that has keys 'summary' and 'start'
     :param surname: mentor's surname
     :return: list of statistics
     """
@@ -59,7 +59,7 @@ def parse_events(events, surname=None):
 
     start = "Mentoring: "
     start_length = len(start)
-    filter_function = lambda e: e['summary'].startswith(start + (surname + '-' if surname else ''))
+    filter_function = lambda e: e['summary'].startswith(start + (surname if surname else ''))
     events = [
         {
             'summary': event['summary'],

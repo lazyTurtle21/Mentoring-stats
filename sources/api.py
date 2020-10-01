@@ -65,5 +65,6 @@ def get(_):
 
 api.register_blueprint(blp)
 
+
 if __name__ == '__main__':
     app.run(debug=True)
